@@ -31,6 +31,7 @@ namespace CommonLib.Collections
 {
     public class DynamicArray<T>
     {
+
         #region Initialize
 
         public DynamicArray() : this(1024) { }
@@ -67,6 +68,7 @@ namespace CommonLib.Collections
             {
                 _Buffer[_LastX][++_LastY] = item;
             }
+            Length++;
             return item;
         }
 
@@ -94,7 +96,7 @@ namespace CommonLib.Collections
         {
             get
             {
-                if (index > Length)
+                if (index >= Length)
                     throw new IndexOutOfRangeException();
                 return _Buffer[index / _BufferSize][index % _BufferSize];
             }
@@ -116,7 +118,6 @@ namespace CommonLib.Collections
         }
 
         #endregion
-
 
     }
 }

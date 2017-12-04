@@ -19,14 +19,14 @@ namespace CommonLibTest
         [Test()]
         public void _Sequenc_ReadWrite()
         {
-            var array = new DynamicArray<int>();
+            var array = new DynamicArray<object>();
             for (int i = 0; i < Round; i++)
             {
                 array.Add(i);
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == array[i]);
+                Assert.IsTrue(i == (int)array[i]);
             }
         }
 
@@ -40,7 +40,7 @@ namespace CommonLibTest
             }
             for (int i = 0; i < Round; i++)
             {
-                //Assert.IsTrue(i == (int)array[i]);
+                Assert.IsTrue(i == (int)array[i]);
             }
         }
     }
