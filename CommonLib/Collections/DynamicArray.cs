@@ -26,10 +26,13 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
 namespace CommonLib.Collections
 {
-    public class DynamicArray<T>
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class DynamicArray<T> : IList<T>
     {
 
         #region Initialize
@@ -43,6 +46,22 @@ namespace CommonLib.Collections
         }
 
         public int Length { get; private set; }
+
+        public int Count
+        {
+            get
+            {
+                return Length;
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         private int _LastX;
         private int _LastY;
@@ -86,6 +105,97 @@ namespace CommonLib.Collections
             _LastY = -1;
             _Buffer = new T[_BufferSize][];
             _Buffer[0] = new T[_BufferSize];
+        }
+        //TODO Index of first visit.
+        public int IndexOf(T item)
+        {
+            throw new NotImplementedException();
+        }
+        //TODO Insert into index
+        public void Insert(int index, T item)
+        {
+            throw new NotImplementedException();
+        }
+        //TODO Remove at index
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICollection<T>.Add(T item)
+        {
+            this.Add(item);
+        }
+        //TODO Contains
+        public bool Contains(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            if (array.Length + arrayIndex < this.Length)
+                throw new System.OverflowException();
+            for (int i = 0; i < _LastX; i++)
+            {
+                Array.Copy(_Buffer[i], 0, array, arrayIndex + (i * _BufferSize), _BufferSize);
+            }
+            Array.Copy(_Buffer[_LastX], 0, array, arrayIndex + (_LastX * _BufferSize), _LastY + 1);
+        }
+        //TODO Remove by value
+        public bool Remove(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new DynamicArrayEnumerator<T>(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        public class DynamicArrayEnumerator<TT> : IEnumerator<TT>
+        {
+            public DynamicArrayEnumerator(DynamicArray<TT> array)
+            {
+                this.array = array;
+            }
+            private DynamicArray<TT> array;
+            private int index = -1;
+            public TT Current
+            {
+                get
+                {
+                    return index > -1 ? array[index] : default(TT);
+                }
+            }
+
+            object IEnumerator.Current
+            {
+                get
+                {
+                    return this.Current;
+                }
+            }
+
+            public void Dispose()
+            {
+                Reset();
+            }
+
+            public bool MoveNext()
+            {
+                return ++index < array.Length;
+            }
+
+            public void Reset()
+            {
+                index = -1;
+            }
         }
 
         #endregion

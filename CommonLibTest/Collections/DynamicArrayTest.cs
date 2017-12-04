@@ -8,7 +8,7 @@ namespace CommonLibTest
     [TestFixture()]
     public class DynamicArrayTest
     {
-        private const int Round = 50000000;
+        private const int Round = 5000000;
 
         [Test()]
         public void _()
@@ -27,6 +27,22 @@ namespace CommonLibTest
             for (int i = 0; i < Round; i++)
             {
                 Assert.IsTrue(i == (int)array[i]);
+            }
+        }
+
+        [Test()]
+        public void CopyTo()
+        {
+            int[] a = new int[Round + 10];
+            DynamicArray<int> array = new DynamicArray<int>();
+            for (int i = 0; i < Round; i++)
+            {
+                array.Add(i);
+            }
+            array.CopyTo(a, 10);
+            for (int i = 0; i < Round; i++)
+            {
+                Assert.IsTrue(i == a[i + 10]);
             }
         }
 
