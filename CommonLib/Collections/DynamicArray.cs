@@ -45,13 +45,25 @@ namespace CommonLib.Collections
             Clear();
         }
 
-        public int Length { get; private set; }
+        public int Length
+        {
+            get
+            {
+                return _Length;
+            }
+            private set
+            {
+                _LastX = (_StartIndex + value) / _BufferSize;
+                _LastY = value - _StartIndex - (_LastX * _BufferSize);
+                _Length = value;
+            }
+        }
 
         public int Count
         {
             get
             {
-                return Length;
+                return _Length;
             }
         }
 
@@ -63,6 +75,8 @@ namespace CommonLib.Collections
             }
         }
 
+        private int _StartIndex;
+        private int _Length;
         private int _LastX;
         private int _LastY;
         private readonly int _BufferSize;
@@ -75,22 +89,62 @@ namespace CommonLib.Collections
 
         public T Add(T item)
         {
-            if (_LastY == _BufferSize - 1)
+            if (++_LastY == _BufferSize)
             {
                 _LastY = 0;
-                if (_LastX == _Buffer.Length - 1)
-                    Expand(0);
-                _Buffer[++_LastX] = new T[_BufferSize];
+                if (++_LastX == _Buffer.Length)
+                    Expand();
+                _Buffer[_LastX] = new T[_BufferSize];
                 _Buffer[_LastX][_LastY] = item;
             }
             else
             {
-                _Buffer[_LastX][++_LastY] = item;
+                _Buffer[_LastX][_LastY] = item;
             }
-            Length++;
+            _Length++;
             return item;
         }
 
+        public T Pop()
+        {
+            var tmp = _Buffer[_LastX][_LastY];
+            _Buffer[_LastX][_LastY] = default(T);
+            if (_LastY-- == 0)
+            {
+                _LastX--;
+                _LastY = _BufferSize - 1;
+            }
+            _Length--;
+            return tmp;
+        }
+
+        public T Dequeue()
+        {
+            int x = _StartIndex / _BufferSize;
+            int y = _StartIndex - (x * _BufferSize);
+            var tmp = _Buffer[x][y];
+            if (x == _Buffer.Length / ExpandFactor)
+            {
+                _StartIndex = 1;
+                var arr = new T[_Buffer.Length - x][];
+                Array.Copy(_Buffer, x, arr, 0, _Buffer.Length - x);
+                _Buffer = arr;
+            }
+            else
+            {
+                _Buffer[x][y] = default(T);
+                _StartIndex++;
+            }
+            _Length--;
+            return tmp;
+        }
+
+        private void Expand()
+        {
+            var tmp = new T[_Buffer.Length * ExpandFactor][];
+            Array.Copy(_Buffer, 0, tmp, 0, _Buffer.Length);
+            _Buffer = tmp;
+        }
         private void Expand(int min)
         {
             int ex = _Buffer.Length * ExpandFactor;
@@ -101,6 +155,8 @@ namespace CommonLib.Collections
 
         public void Clear()
         {
+            _StartIndex = 0;
+            _Length = 0;
             _LastX = 0;
             _LastY = -1;
             _Buffer = new T[_BufferSize][];
@@ -208,6 +264,7 @@ namespace CommonLib.Collections
             {
                 if (index >= Length)
                     throw new IndexOutOfRangeException();
+                index += _StartIndex;
                 return _Buffer[index / _BufferSize][index % _BufferSize];
             }
             set

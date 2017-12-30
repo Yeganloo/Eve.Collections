@@ -8,7 +8,7 @@ namespace CommonLibTest
     [TestFixture()]
     public class DynamicArrayTest
     {
-        private const int Round = 5000000;
+        private const int Round = 6000000;
 
         [Test()]
         public void _()
@@ -19,6 +19,7 @@ namespace CommonLibTest
         [Test()]
         public void _Sequenc_ReadWrite()
         {
+            int k;
             var array = new DynamicArray<object>();
             for (int i = 0; i < Round; i++)
             {
@@ -26,7 +27,7 @@ namespace CommonLibTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == (int)array[i]);
+                k = (int)array[i];
             }
         }
 
@@ -49,6 +50,7 @@ namespace CommonLibTest
         [Test()]
         public void MSList_ReadWrite()
         {
+            int k;
             var array = new List<object>();
             for (int i = 0; i < Round; i++)
             {
@@ -56,7 +58,8 @@ namespace CommonLibTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == (int)array[i]);
+                //Assert.IsTrue(i == (int)array[i]);
+                k = (int)array[i];
             }
         }
     }
