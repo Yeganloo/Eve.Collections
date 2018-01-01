@@ -33,6 +33,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ObjectPoolTest.cs" />
     <Compile Include="Collections\DynamicArrayTest.cs" />
   </ItemGroup>
   <ItemGroup>

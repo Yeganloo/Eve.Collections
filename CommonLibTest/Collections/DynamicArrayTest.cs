@@ -8,12 +8,27 @@ namespace CommonLibTest
     [TestFixture()]
     public class DynamicArrayTest
     {
-        private const int Round = 6000000;
+        private const int Round = 3000000;
 
         [Test()]
         public void _()
         {
 
+        }
+
+        [Test()]
+        public void _ReversSequenc_ReadWrite()
+        {
+            int k;
+            var array = new DynamicArray<object>();
+            for (int i = Round - 1; i > -1; i--)
+            {
+                array[i] = i;
+            }
+            for (int i = 0; i < Round; i++)
+            {
+                Assert.IsTrue(i == (int)array[i]);
+            }
         }
 
         [Test()]
@@ -23,11 +38,56 @@ namespace CommonLibTest
             var array = new DynamicArray<object>();
             for (int i = 0; i < Round; i++)
             {
+                array[i] = i;
+            }
+            for (int i = 0; i < Round; i++)
+            {
+                Assert.IsTrue(i == (int)array[i]);
+            }
+        }
+
+        [Test()]
+        public void _SequencAdd_ReadWrite()
+        {
+            int k;
+            var array = new DynamicArray<object>();
+            for (int i = 0; i < Round; i++)
+            {
                 array.Add(i);
             }
             for (int i = 0; i < Round; i++)
             {
-                k = (int)array[i];
+                Assert.IsTrue(i == (int)array[i]);
+            }
+        }
+
+        [Test()]
+        public void _Queue_ReadWrite()
+        {
+            int k;
+            var array = new DynamicArray<object>();
+            for (int i = 0; i < Round; i++)
+            {
+                array.Add(i);
+            }
+            for (int i = 0; i < Round; i++)
+            {
+                Assert.IsTrue(i == (int)array.Dequeue());
+            }
+        }
+
+        [Test()]
+        public void _Stack_ReadWrite()
+        {
+            int k;
+            var array = new DynamicArray<object>();
+            for (int i = 0; i < Round; i++)
+            {
+                array.Add(i);
+            }
+            for (int i = 0; i < Round; i++)
+            {
+                Assert.IsTrue(Round - i - 1 == (int)array.Pop());
             }
         }
 
@@ -58,8 +118,7 @@ namespace CommonLibTest
             }
             for (int i = 0; i < Round; i++)
             {
-                //Assert.IsTrue(i == (int)array[i]);
-                k = (int)array[i];
+                Assert.IsTrue(i == (int)array[i]);
             }
         }
     }

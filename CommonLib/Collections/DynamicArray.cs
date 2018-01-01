@@ -87,7 +87,7 @@ namespace CommonLib.Collections
 
         #region Actions
 
-        public T Add(T item)
+        public void Add(T item)
         {
             if (++_LastY == _BufferSize)
             {
@@ -102,7 +102,6 @@ namespace CommonLib.Collections
                 _Buffer[_LastX][_LastY] = item;
             }
             _Length++;
-            return item;
         }
 
         public T Pop()
@@ -278,7 +277,7 @@ namespace CommonLib.Collections
                     while (_LastX < x)
                         _Buffer[++_LastX] = new T[_BufferSize];
                     _LastY = y;
-                    Length++;
+                    _Length = index + 1;
                 }
                 _Buffer[x][y] = value;
             }
