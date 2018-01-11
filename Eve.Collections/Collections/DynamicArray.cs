@@ -26,7 +26,7 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-namespace CommonLib.Collections
+namespace Eve.Collections
 {
     using System;
     using System.Collections;
@@ -161,20 +161,40 @@ namespace CommonLib.Collections
             _Buffer = new T[_BufferSize][];
             _Buffer[0] = new T[_BufferSize];
         }
-        //TODO Index of first visit.
+
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            for (int i = _StartIndex; i < Length; i++)
+            {
+                T k = this[i];
+                if (k != null && k.Equals(item))
+                {
+                    return i - _StartIndex;
+                }
+            }
+            return -1;
         }
+
         //TODO Insert into index
         public void Insert(int index, T item)
         {
             throw new NotImplementedException();
         }
-        //TODO Remove at index
+
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            index = index + _StartIndex;
+            int x = index / _BufferSize;
+            int y = index - (x * _BufferSize);
+            Array.Copy(_Buffer[x], y + 1, _Buffer[x], y, _BufferSize - y - 1);
+
+            for (int i = x + 1; i <= _LastX; i++)
+            {
+                _Buffer[i - 1][_BufferSize - 1] = _Buffer[i][0];
+                Array.Copy(_Buffer[i], 1, _Buffer[i], 0, _BufferSize - 1);
+            }
+            _Buffer[_LastX][_LastY] = default(T);
+            Length--;
         }
 
         void ICollection<T>.Add(T item)

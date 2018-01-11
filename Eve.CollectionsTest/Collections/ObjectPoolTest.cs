@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
-using CommonLib.Collections;
-using System;
-using System.Collections.Generic;
+using Eve.Collections;
 
-namespace CommonLibTest
+
+namespace Eve.CollectionsTest
 {
     [TestFixture()]
     public class ObjectPoolTest
@@ -19,7 +18,6 @@ namespace CommonLibTest
         [Test()]
         public void _Sequenc_ReadWrite()
         {
-            int k;
             var pool = new ObjectPool<object>();
             for (int i = 0; i < Round; i++)
             {

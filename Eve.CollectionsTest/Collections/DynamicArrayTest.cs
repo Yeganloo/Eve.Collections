@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
-using CommonLib.Collections;
-using System;
+using Eve.Collections;
 using System.Collections.Generic;
 
-namespace CommonLibTest
+namespace Eve.CollectionsTest
 {
     [TestFixture()]
     public class DynamicArrayTest
@@ -19,7 +18,7 @@ namespace CommonLibTest
         [Test()]
         public void _ReversSequenc_ReadWrite()
         {
-            int k;
+
             var array = new DynamicArray<object>();
             for (int i = Round - 1; i > -1; i--)
             {
@@ -34,7 +33,6 @@ namespace CommonLibTest
         [Test()]
         public void _Sequenc_ReadWrite()
         {
-            int k;
             var array = new DynamicArray<object>();
             for (int i = 0; i < Round; i++)
             {
@@ -49,7 +47,6 @@ namespace CommonLibTest
         [Test()]
         public void _SequencAdd_ReadWrite()
         {
-            int k;
             var array = new DynamicArray<object>();
             for (int i = 0; i < Round; i++)
             {
@@ -64,7 +61,6 @@ namespace CommonLibTest
         [Test()]
         public void _Queue_ReadWrite()
         {
-            int k;
             var array = new DynamicArray<object>();
             for (int i = 0; i < Round; i++)
             {
@@ -79,7 +75,6 @@ namespace CommonLibTest
         [Test()]
         public void _Stack_ReadWrite()
         {
-            int k;
             var array = new DynamicArray<object>();
             for (int i = 0; i < Round; i++)
             {
@@ -108,9 +103,27 @@ namespace CommonLibTest
         }
 
         [Test()]
+        public void RmoveAt()
+        {
+            int rem = 73;
+            DynamicArray<int> array = new DynamicArray<int>(10);
+            for (int i = 0; i < 90; i++)
+            {
+                array.Add(i);
+            }
+            array.RemoveAt(rem);
+            for (int i = 0; i < 89; i++)
+            {
+                if (i < rem)
+                    Assert.IsTrue(i == array[i]);
+                else
+                    Assert.IsTrue(i + 1 == array[i]);
+            }
+        }
+
+        [Test()]
         public void MSList_ReadWrite()
         {
-            int k;
             var array = new List<object>();
             for (int i = 0; i < Round; i++)
             {

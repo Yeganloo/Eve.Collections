@@ -26,7 +26,7 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-namespace CommonLib.Collections
+namespace Eve.Collections
 {
     using System;
 

@@ -6,7 +6,7 @@
     <ProjectGuid>{4229CCF3-904B-4329-AD20-701FA832E2D7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>CommonLibTest</RootNamespace>
-    <AssemblyName>CommonLibTest</AssemblyName>
+    <AssemblyName>Eve.CollectionsTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -17,6 +17,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -42,7 +43,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Eve.Collections\Eve.Collections.csproj">
       <Project>{4674AA14-BABD-47EE-B608-AAFF1D3FEF13}</Project>
-      <Name>CommonLib</Name>
+      <Name>Eve.Collections</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
