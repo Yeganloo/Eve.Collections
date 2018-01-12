@@ -175,10 +175,29 @@ namespace Eve.Collections
             return -1;
         }
 
-        //TODO Insert into index
         public void Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            index += _StartIndex;
+            int x = index / _BufferSize;
+            int y = index - (x * _BufferSize);
+
+            if (index < Length)
+            {
+                Add(_Buffer[_LastX][_LastY]);
+                Array.Copy(_Buffer[_LastX], 0, _Buffer[_LastX], 1, _LastY);
+                for (int i = _LastX; i > x; i--)
+                {
+                    Array.Copy(_Buffer[i], 0, _Buffer[i], 1, _BufferSize - 1);
+                    _Buffer[i][0] = _Buffer[i - 1][_BufferSize - 1];
+                }
+                Array.Copy(_Buffer[x], y, _Buffer[x], y + 1, _BufferSize - y - 1);
+                _Buffer[x][y] = item;
+            }
+            else
+            {
+                this[index] = item;
+            }
+
         }
 
         public void RemoveAt(int index)
@@ -201,10 +220,18 @@ namespace Eve.Collections
         {
             this.Add(item);
         }
-        //TODO Contains
+
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            for (int i = _StartIndex; i < Length; i++)
+            {
+                T k = this[i];
+                if (k != null && k.Equals(item))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
@@ -217,10 +244,19 @@ namespace Eve.Collections
             }
             Array.Copy(_Buffer[_LastX], 0, array, arrayIndex + (_LastX * _BufferSize), _LastY + 1);
         }
-        //TODO Remove by value
+
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            for (int i = _StartIndex; i < Length; i++)
+            {
+                T k = this[i];
+                if (k != null && k.Equals(item))
+                {
+                    RemoveAt(i - _StartIndex);
+                    return true;
+                }
+            }
+            return false;
         }
 
         public IEnumerator<T> GetEnumerator()

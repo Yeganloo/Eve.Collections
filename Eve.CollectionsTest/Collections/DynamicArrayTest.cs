@@ -122,6 +122,27 @@ namespace Eve.CollectionsTest
         }
 
         [Test()]
+        public void Insert()
+        {
+            int rem = 73;
+            DynamicArray<int> array = new DynamicArray<int>(10);
+            for (int i = 0; i < 90; i++)
+            {
+                array.Add(i);
+            }
+            array.Insert(rem, -1);
+            for (int i = 0; i < 89; i++)
+            {
+                if (i < rem)
+                    Assert.IsTrue(i == array[i]);
+                else if (i == rem)
+                    Assert.IsTrue(-1 == array[i]);
+                else
+                    Assert.AreEqual(i - 1, array[i]);
+            }
+        }
+
+        [Test()]
         public void MSList_ReadWrite()
         {
             var array = new List<object>();
