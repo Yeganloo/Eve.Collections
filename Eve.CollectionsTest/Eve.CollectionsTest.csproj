@@ -35,6 +35,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\Graph\GraphTest.cs" />
     <Compile Include="Collections\ObjectPoolTest.cs" />
     <Compile Include="Collections\DynamicArrayTest.cs" />
   </ItemGroup>
