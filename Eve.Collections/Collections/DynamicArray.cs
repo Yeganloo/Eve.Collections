@@ -223,7 +223,7 @@ namespace Eve.Collections
 
         public bool Contains(T item)
         {
-            for (int i = _StartIndex; i < Length; i++)
+            for (int i = _StartIndex; i < Length + _StartIndex; i++)
             {
                 T k = this[i];
                 if (k != null && k.Equals(item))
@@ -247,7 +247,7 @@ namespace Eve.Collections
 
         public bool Remove(T item)
         {
-            for (int i = _StartIndex; i < Length; i++)
+            for (int i = _StartIndex; i < Length + _StartIndex; i++)
             {
                 T k = this[i];
                 if (k != null && k.Equals(item))
