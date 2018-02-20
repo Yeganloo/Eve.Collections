@@ -15,11 +15,18 @@ namespace CommonLib.Collections.Graph
 
         private readonly DynamicArray<Node<TNode>> _Nodes;
         private readonly DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>> Neigbors;
-        private int _AverageEdges = 1;
+        private int _AverageEdges = 4;
         public bool Directed { get; }
 
 
-        public int Count { get; private set; }
+        private int _Count;
+        public int Count
+        {
+            get
+            {
+                return _Count;
+            }
+        }
 
         #region Init
 
@@ -31,7 +38,7 @@ namespace CommonLib.Collections.Graph
         }
         public Graph(bool directed, int count)
         {
-            int bufs = (int)Math.Sqrt(count) + 1;
+            int bufs = (int)Math.Sqrt(count) + 4;
             _Nodes = new DynamicArray<Node<TNode>>(bufs);
             Neigbors = new DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>>(bufs);
             Directed = directed;
@@ -51,8 +58,8 @@ namespace CommonLib.Collections.Graph
                 {
                     Neigbors[id] = new DynamicArray<KeyValuePair<int, TEdge>>(_AverageEdges);
                     _Nodes[id] = value;
-                    Count++;
-                    _AverageEdges = (int)Math.Log(Count + 2, 2);
+                    _Count++;
+                    _AverageEdges = (int)Math.Sqrt(Count + 16);
                 }
             }
         }

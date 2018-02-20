@@ -110,7 +110,7 @@ namespace Eve.Collections
             _Buffer[_LastX][_LastY] = default(T);
             if (_LastY-- == 0)
             {
-                _LastX--;
+                _Buffer[_LastX--] = null;
                 _LastY = _BufferSize - 1;
             }
             _Length--;
