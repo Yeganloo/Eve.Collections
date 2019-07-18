@@ -1,21 +1,21 @@
 ﻿using CommonLib.Collections.Graph;
-using NUnit.Framework;
+using Xunit;
 using System;
 
 namespace Eve.CollectionsTest.Graph
 {
-    [TestFixture()]
+    
     public class GraphTest
     {
         private const int Round = 300000;
 
-        [Test()]
+        [Fact]
         public void _()
         {
 
         }
 
-        [Test()]
+        [Fact]
         public void _Sequenc_ReadWrite()
         {
             var graph = new Graph<object, int>(false, Round);
@@ -30,7 +30,7 @@ namespace Eve.CollectionsTest.Graph
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == (int)graph[i].Value);
+                Assert.True(i == (int)graph[i].Value);
             }
         }
 

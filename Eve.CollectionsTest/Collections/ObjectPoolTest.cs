@@ -1,21 +1,20 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using Eve.Collections;
 
 
 namespace Eve.CollectionsTest
 {
-    [TestFixture()]
     public class ObjectPoolTest
     {
         private const int Round = 3000000;
 
-        [Test()]
+        [Fact]
         public void _()
         {
 
         }
 
-        [Test()]
+        [Fact]
         public void _Sequenc_ReadWrite()
         {
             var pool = new ObjectPool<object>();
@@ -25,7 +24,7 @@ namespace Eve.CollectionsTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(Round - i - 1 == (int)pool.Get());
+                Assert.True(Round - i - 1 == (int)pool.Get());
             }
         }
 

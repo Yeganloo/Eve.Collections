@@ -1,21 +1,20 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using Eve.Collections;
 using System.Collections.Generic;
 
 namespace Eve.CollectionsTest
 {
-    [TestFixture()]
     public class DynamicArrayTest
     {
         private const int Round = 3000000;
 
-        [Test()]
+        [Fact]
         public void _()
         {
 
         }
 
-        [Test()]
+        [Fact]
         public void _ReversSequenc_ReadWrite()
         {
 
@@ -26,11 +25,11 @@ namespace Eve.CollectionsTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == (int)array[i]);
+                Assert.True(i == (int)array[i]);
             }
         }
 
-        [Test()]
+        [Fact]
         public void _Sequenc_ReadWrite()
         {
             var array = new DynamicArray<object>();
@@ -40,11 +39,11 @@ namespace Eve.CollectionsTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == (int)array[i]);
+                Assert.True(i == (int)array[i]);
             }
         }
 
-        [Test()]
+        [Fact]
         public void _SequencAdd_ReadWrite()
         {
             var array = new DynamicArray<object>();
@@ -54,11 +53,11 @@ namespace Eve.CollectionsTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == (int)array[i]);
+                Assert.True(i == (int)array[i]);
             }
         }
 
-        [Test()]
+        [Fact]
         public void _Queue_ReadWrite()
         {
             var array = new DynamicArray<object>();
@@ -68,11 +67,11 @@ namespace Eve.CollectionsTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == (int)array.Dequeue());
+                Assert.True(i == (int)array.Dequeue());
             }
         }
 
-        [Test()]
+        [Fact]
         public void _Stack_ReadWrite()
         {
             var array = new DynamicArray<object>();
@@ -82,11 +81,11 @@ namespace Eve.CollectionsTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(Round - i - 1 == (int)array.Pop());
+                Assert.True(Round - i - 1 == (int)array.Pop());
             }
         }
 
-        [Test()]
+        [Fact]
         public void CopyTo()
         {
             int[] a = new int[Round + 10];
@@ -98,11 +97,11 @@ namespace Eve.CollectionsTest
             array.CopyTo(a, 10);
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == a[i + 10]);
+                Assert.True(i == a[i + 10]);
             }
         }
 
-        [Test()]
+        [Fact]
         public void RmoveAt()
         {
             int rem = 73;
@@ -115,13 +114,13 @@ namespace Eve.CollectionsTest
             for (int i = 0; i < 89; i++)
             {
                 if (i < rem)
-                    Assert.IsTrue(i == array[i]);
+                    Assert.True(i == array[i]);
                 else
-                    Assert.IsTrue(i + 1 == array[i]);
+                    Assert.True(i + 1 == array[i]);
             }
         }
 
-        [Test()]
+        [Fact]
         public void Insert()
         {
             int rem = 73;
@@ -134,15 +133,15 @@ namespace Eve.CollectionsTest
             for (int i = 0; i < 89; i++)
             {
                 if (i < rem)
-                    Assert.IsTrue(i == array[i]);
+                    Assert.True(i == array[i]);
                 else if (i == rem)
-                    Assert.IsTrue(-1 == array[i]);
+                    Assert.True(-1 == array[i]);
                 else
-                    Assert.AreEqual(i - 1, array[i]);
+                    Assert.Equal(i - 1, array[i]);
             }
         }
 
-        [Test()]
+        [Fact]
         public void MSList_ReadWrite()
         {
             var array = new List<object>();
@@ -152,7 +151,7 @@ namespace Eve.CollectionsTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.IsTrue(i == (int)array[i]);
+                Assert.True(i == (int)array[i]);
             }
         }
     }
