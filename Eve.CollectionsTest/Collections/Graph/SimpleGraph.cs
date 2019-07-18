@@ -5,7 +5,7 @@ using System;
 namespace Eve.CollectionsTest.Graph
 {
     
-    public class GraphTest
+    public class SimpleGraphTest
     {
         private const int Round = 300000;
 
@@ -18,7 +18,7 @@ namespace Eve.CollectionsTest.Graph
         [Fact]
         public void _Sequenc_ReadWrite()
         {
-            var graph = new Graph<object, int>(false, Round);
+            var graph = new SimpleGraph<object>(false, Round);
             var random = new Random(DateTime.Now.Millisecond);
             for (int i = 0; i < Round; i++)
             {
@@ -26,7 +26,7 @@ namespace Eve.CollectionsTest.Graph
             }
             for (int i = 0; i < Round * 4.5; i++)
             {
-                graph.AddEdge(random.Next(0, Round - 1), random.Next(0, Round - 1), i);
+                graph.AddEdge(random.Next(0, Round - 1), random.Next(0, Round - 1));
             }
             for (int i = 0; i < Round; i++)
             {
