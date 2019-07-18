@@ -1,4 +1,4 @@
-﻿namespace CommonLib.Collections.Graph
+﻿namespace Eve.Collections.Graph
 {
     public struct Node<T>
     {

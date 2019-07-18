@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CommonLib.Collections.Graph
+namespace Eve.Collections.Graph
 {
     public class Graph<TNode, TEdge> : IEnumerable<Node<TNode>>
     {
