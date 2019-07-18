@@ -7,12 +7,6 @@ namespace Eve.Collections.Graph
 {
     public class Graph<TNode, TEdge> : IEnumerable<Node<TNode>>
     {
-        #region Lockers
-
-        private readonly object Locker_Global = new object();
-
-        #endregion
-
         private readonly DynamicArray<Node<TNode>> _Nodes;
         private readonly DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>> Neigbors;
         private int _AverageEdges = 4;
@@ -59,8 +53,8 @@ namespace Eve.Collections.Graph
                     Neigbors[id] = new DynamicArray<KeyValuePair<int, TEdge>>(_AverageEdges);
                     _Nodes[id] = value;
                     _Count++;
-                    _AverageEdges = (int)Math.Sqrt(Count + 16);
                 }
+                _AverageEdges = (int)Math.Sqrt(Count + 16);
             }
         }
 
@@ -90,6 +84,16 @@ namespace Eve.Collections.Graph
                     src.Add(new KeyValuePair<int, TEdge>(destination, value));
                     dst.Add(new KeyValuePair<int, TEdge>(source, value));
                 }
+            }
+        }
+
+        public void Clear()
+        {
+            lock(Neigbors)
+            {
+                _Nodes.Clear();
+                Neigbors.Clear();
+                _Count = 0;
             }
         }
 
