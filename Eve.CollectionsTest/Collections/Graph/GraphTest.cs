@@ -4,7 +4,7 @@ using System;
 
 namespace Eve.CollectionsTest.Graph
 {
-    
+    [Collection("Non-Parallel")]
     public class GraphTest
     {
         private const int Round = 300000;

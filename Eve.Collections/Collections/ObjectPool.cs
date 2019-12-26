@@ -52,12 +52,13 @@ namespace Eve.Collections
 
         public T Get()
         {
-            lock (_Pool)
-            {
-                if (_Pool.Length > 0)
+            if (_Pool.Length > 0)
+                lock (_Pool)
+                {
                     return _Pool.Pop();
-                return _Constructor();
-            }
+                }
+            return _Constructor();
+            
         }
 
         public int Count

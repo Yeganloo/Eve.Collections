@@ -2,7 +2,18 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Eve.Collection</PackageId>
+    <Version>0.1.0-alpha</Version>
+    <Authors>hoseinyeganloo@gmail.com</Authors>
+    <Company>Eve</Company>
+    <PackageDescription>A balance between Access-Time and memory usage.</PackageDescription>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Copyright>Hosein Yeganloo - 2017</Copyright>
+    <PackageTags>Graph;Object Pool;List;Generic;Collection</PackageTags>
+    <RepositoryURL>https://github.com/Yeganloo/Eve.Collection</RepositoryURL>
   </PropertyGroup>
-
+  <ItemGroup>
+    <None Include="../LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+  </ItemGroup>
 </Project>

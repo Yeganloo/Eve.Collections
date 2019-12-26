@@ -4,9 +4,10 @@ using System.Collections.Generic;
 
 namespace Eve.CollectionsTest
 {
+    [Collection("Non-Parallel")]
     public class DynamicArrayTest
     {
-        private const int Round = 3000000;
+        private const int Round = 30000000;
 
         [Fact]
         public void _()
