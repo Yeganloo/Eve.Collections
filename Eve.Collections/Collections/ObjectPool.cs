@@ -32,6 +32,7 @@ namespace Eve.Collections
 
     public class ObjectPool<T>
     {
+        private object GLock = new object();
         public ObjectPool() : this(() => { return Activator.CreateInstance<T>(); }) { }
         public ObjectPool(Func<T> constructor) { _Constructor = constructor; }
 
@@ -41,7 +42,7 @@ namespace Eve.Collections
 
         public void Catch(T Object)
         {
-            lock (_Pool)
+            lock (GLock)
             {
                 if (_Destructor != null)
                     _Pool.Add(_Destructor(Object));
@@ -53,7 +54,7 @@ namespace Eve.Collections
         public T Get()
         {
             if (_Pool.Length > 0)
-                lock (_Pool)
+                lock (GLock)
                 {
                     return _Pool.Pop();
                 }

@@ -5,20 +5,14 @@ using System;
 namespace Eve.CollectionsTest.Graph
 {
     [Collection("Non-Parallel")]
-    public class SimpleGraphTest
+    public class WeightedGraphTest
     {
-        private const int Round = 300000;
-
-        [Fact]
-        public void _()
-        {
-
-        }
+        private const int Round = 500000;
 
         [Fact]
         public void _Sequenc_ReadWrite()
         {
-            var graph = new SimpleGraph<object>(false, Round);
+            var graph = new WeightedGraph<object,int>(false, Round);
             var random = new Random(DateTime.Now.Millisecond);
             for (int i = 0; i < Round; i++)
             {

@@ -10,12 +10,6 @@ namespace Eve.CollectionsTest
         private const int Round = 30000000;
 
         [Fact]
-        public void _()
-        {
-
-        }
-
-        [Fact]
         public void _Sequenc_ReadWrite()
         {
             var pool = new ObjectPool<object>();

@@ -5,14 +5,14 @@ using System;
 namespace Eve.CollectionsTest.Graph
 {
     [Collection("Non-Parallel")]
-    public class GraphTest
+    public class DirectedGraphTest
     {
         private const int Round = 500000;
 
         [Fact]
         public void _Sequenc_ReadWrite()
         {
-            var graph = new Graph<object>(false, Round);
+            var graph = new DirectedGraph<object>(Round);
             var random = new Random(DateTime.Now.Millisecond);
             for (int i = 0; i < Round; i++)
             {

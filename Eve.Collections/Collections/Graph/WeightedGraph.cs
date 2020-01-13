@@ -1,21 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Eve.Collections.Graph
 {
-    public class Graph<TNode> : GraphBase<TNode,int>
+    public class WeightedGraph<TNode, TEdge> : GraphBase<TNode, TEdge>
     {
-        protected object GLock = new object();
-        protected readonly DynamicArray<DynamicArray<int>> Neigbors;
-        
+        private object GLock = new object();
+        protected readonly DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>> Neigbors;
+
         #region Init
 
-        public Graph(bool directed) : base(directed)
+        public WeightedGraph(bool directed) : base(directed)
         {
-            Neigbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
+            Neigbors = new DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>>(_AverageEdges);
         }
-        public Graph(bool directed, int count) : base(directed, count)
+        public WeightedGraph(bool directed, int count) : base(directed, count)
         {
-            Neigbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
+            Neigbors = new DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>>(_AverageEdges);
         }
 
         #endregion
@@ -30,7 +31,7 @@ namespace Eve.Collections.Graph
             {
                 lock (GLock)
                 {
-                    Neigbors[id] = new DynamicArray<int>(_AverageEdges);
+                    Neigbors[id] = new DynamicArray<KeyValuePair<int, TEdge>>(_AverageEdges);
                     _Nodes[id] = value;
                     Count++;
                 }
@@ -47,12 +48,17 @@ namespace Eve.Collections.Graph
 
         public override void AddEdge(int source, int destination)
         {
+            AddEdge(source, destination, default(TEdge));
+        }
+
+        public void AddEdge(int source, int destination, TEdge value)
+        {
             if (Directed)
             {
                 var src = Neigbors[source];
                 lock (src)
                 {
-                    src.Add(destination);
+                    src.Add(new KeyValuePair<int, TEdge>(destination, value));
                 }
             }
             else
@@ -61,15 +67,15 @@ namespace Eve.Collections.Graph
                 var dst = Neigbors[destination];
                 lock (GLock)
                 {
-                    src.Add(destination);
-                    dst.Add(source);
+                    src.Add(new KeyValuePair<int, TEdge>(destination, value));
+                    dst.Add(new KeyValuePair<int, TEdge>(source, value));
                 }
             }
         }
 
         public override void Clear()
         {
-            lock(GLock)
+            lock (GLock)
             {
                 _Nodes.Clear();
                 Neigbors.Clear();
