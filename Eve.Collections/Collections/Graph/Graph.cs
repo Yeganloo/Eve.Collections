@@ -1,5 +1,4 @@
-﻿using Eve.Collections;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,13 +6,14 @@ namespace Eve.Collections.Graph
 {
     public class Graph<TNode, TEdge> : IEnumerable<Node<TNode>>
     {
-        private readonly DynamicArray<Node<TNode>> _Nodes;
-        private readonly DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>> Neigbors;
+        private object GLock = new object();
+        protected readonly DynamicArray<Node<TNode>> _Nodes;
+        protected readonly DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>> Neigbors;
         private int _AverageEdges = 4;
         public bool Directed { get; }
 
 
-        private int _Count;
+        protected int _Count;
         public int Count
         {
             get
@@ -48,7 +48,7 @@ namespace Eve.Collections.Graph
             }
             set
             {
-                lock (Neigbors)
+                lock (GLock)
                 {
                     Neigbors[id] = new DynamicArray<KeyValuePair<int, TEdge>>(_AverageEdges);
                     _Nodes[id] = value;
@@ -79,7 +79,7 @@ namespace Eve.Collections.Graph
             {
                 var src = Neigbors[source];
                 var dst = Neigbors[destination];
-                lock (Neigbors)
+                lock (GLock)
                 {
                     src.Add(new KeyValuePair<int, TEdge>(destination, value));
                     dst.Add(new KeyValuePair<int, TEdge>(source, value));
@@ -89,7 +89,7 @@ namespace Eve.Collections.Graph
 
         public void Clear()
         {
-            lock(Neigbors)
+            lock (GLock)
             {
                 _Nodes.Clear();
                 Neigbors.Clear();
