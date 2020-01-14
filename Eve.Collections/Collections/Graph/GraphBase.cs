@@ -10,8 +10,8 @@ namespace Eve.Collections.Graph
         protected readonly DynamicArray<Node<TNode>> _Nodes;
         protected int _AverageEdges = Growth;
         public bool Directed { get; }
-        
-        public int Count{ get; protected set; }
+
+        public int Count { get; protected set; }
 
         #region Init
 
@@ -23,7 +23,7 @@ namespace Eve.Collections.Graph
 
         public GraphBase(bool directed, int count)
         {
-            _Nodes = new DynamicArray<Node<TNode>>(_AverageEdges = (int)Math.Sqrt(count) + Growth);
+            _Nodes = new DynamicArray<Node<TNode>>(_AverageEdges = (int)Math.Sqrt(count + Growth));
             Directed = directed;
         }
 
@@ -38,6 +38,8 @@ namespace Eve.Collections.Graph
         public abstract Node<TNode> Set(int id, TNode value);
 
         public abstract void AddEdge(int source, int destination);
+
+        public abstract IEnumerable<Node<TNode>> GetNeigbors(int nodeId);
 
         public abstract void Clear();
 

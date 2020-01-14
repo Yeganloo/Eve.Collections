@@ -48,7 +48,7 @@ namespace Eve.Collections.Graph
 
         public override void AddEdge(int source, int destination)
         {
-            AddEdge(source, destination, default(TEdge));
+            AddEdge(source, destination, default);
         }
 
         public void AddEdge(int source, int destination, TEdge value)
@@ -81,6 +81,12 @@ namespace Eve.Collections.Graph
                 Neigbors.Clear();
                 Count = 0;
             }
+        }
+
+        public override IEnumerable<Node<TNode>> GetNeigbors(int nodeId)
+        {
+            foreach (var n in Neigbors[nodeId])
+                yield return _Nodes[n.Key];
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Eve.Collections.Graph
 {
@@ -75,6 +76,12 @@ namespace Eve.Collections.Graph
                 Neigbors.Clear();
                 Count = 0;
             }
+        }
+
+        public override IEnumerable<Node<TNode>> GetNeigbors(int nodeId)
+        {
+            foreach (var n in Neigbors[nodeId])
+                yield return _Nodes[n];
         }
     }
 }
