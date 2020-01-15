@@ -41,6 +41,8 @@ namespace Eve.Collections.Graph
 
         public abstract IEnumerable<Node<TNode>> GetNeigbors(int nodeId);
 
+        public abstract bool AreNeigbor(int node1, int node2);
+
         public abstract void Clear();
 
         #region Intefaces

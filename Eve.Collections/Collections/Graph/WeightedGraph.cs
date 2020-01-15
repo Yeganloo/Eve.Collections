@@ -88,5 +88,13 @@ namespace Eve.Collections.Graph
             foreach (var n in Neigbors[nodeId])
                 yield return _Nodes[n.Key];
         }
+
+        public override bool AreNeigbor(int node1, int node2)
+        {
+            foreach (var n in Neigbors[node1])
+                if (n.Key == node2)
+                    return true;
+            return false;
+        }
     }
 }

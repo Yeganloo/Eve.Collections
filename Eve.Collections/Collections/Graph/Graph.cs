@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Eve.Collections.Graph
 {
-    public class Graph<TNode> : GraphBase<TNode,int>
+    public class Graph<TNode> : GraphBase<TNode, int>
     {
         protected object GLock = new object();
         protected readonly DynamicArray<DynamicArray<int>> Neigbors;
-        
+
         #region Init
 
         public Graph(bool directed) : base(directed)
@@ -70,7 +70,7 @@ namespace Eve.Collections.Graph
 
         public override void Clear()
         {
-            lock(GLock)
+            lock (GLock)
             {
                 _Nodes.Clear();
                 Neigbors.Clear();
@@ -82,6 +82,11 @@ namespace Eve.Collections.Graph
         {
             foreach (var n in Neigbors[nodeId])
                 yield return _Nodes[n];
+        }
+
+        public override bool AreNeigbor(int node1, int node2)
+        {
+            return Neigbors[node1].Contains(node2);
         }
     }
 }
