@@ -35,7 +35,7 @@ namespace Eve.Collections.Graph
                     _Nodes[id] = value;
                     Count++;
                 }
-                _AverageEdges = (int)Math.Sqrt(Count + Growth);
+                _AverageEdges = (int)Math.Max(Math.Sqrt(Count + Growth), _AverageEdges);
             }
         }
 

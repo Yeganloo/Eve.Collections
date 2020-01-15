@@ -6,7 +6,7 @@ namespace Eve.Collections.Graph
 {
     public abstract class GraphBase<TNode, TEdge> : IEnumerable<Node<TNode>>
     {
-        protected const int Growth = 16;
+        protected const int Growth = 1024;
         protected readonly DynamicArray<Node<TNode>> _Nodes;
         protected int _AverageEdges = Growth;
         public bool Directed { get; }
@@ -23,7 +23,7 @@ namespace Eve.Collections.Graph
 
         public GraphBase(bool directed, int count)
         {
-            _Nodes = new DynamicArray<Node<TNode>>(_AverageEdges = (int)Math.Sqrt(count + Growth));
+            _Nodes = new DynamicArray<Node<TNode>>(_AverageEdges = (int)Math.Ceiling(Math.Sqrt(count + Growth)));
             Directed = directed;
         }
 
