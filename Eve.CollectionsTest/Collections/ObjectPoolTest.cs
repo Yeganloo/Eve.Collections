@@ -7,7 +7,7 @@ namespace Eve.CollectionsTest
     [Collection("Non-Parallel")]
     public class ObjectPoolTest
     {
-        private const int Round = 30000000;
+        private const int Round = 90000000;
 
         [Fact]
         public void _Sequenc_ReadWrite()
@@ -19,7 +19,7 @@ namespace Eve.CollectionsTest
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.True(Round - i - 1 == (int)pool.Get());
+                Assert.True(i == (int)pool.Get());
             }
         }
 

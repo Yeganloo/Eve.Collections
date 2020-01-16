@@ -34,14 +34,13 @@ namespace Eve.Collections
 
     public class DynamicArray<T> : IList<T>
     {
-
+        private object ExpandLock = new object();
         #region Initialize
 
         public DynamicArray() : this(1024) { }
         public DynamicArray(int bufferSize)
         {
             _BufferSize = bufferSize;
-            ExpandFactor = 2;
             Clear();
         }
 
@@ -80,7 +79,6 @@ namespace Eve.Collections
         private int _LastX;
         private int _LastY;
         private readonly int _BufferSize;
-        private readonly int ExpandFactor;
         private T[][] _Buffer;
 
         #endregion
@@ -93,7 +91,7 @@ namespace Eve.Collections
             {
                 _LastY = 0;
                 if (++_LastX == _Buffer.Length)
-                    Expand();
+                    Expand(Length + 1);
                 _Buffer[_LastX] = new T[_BufferSize];
                 _Buffer[_LastX][_LastY] = item;
             }
@@ -122,7 +120,7 @@ namespace Eve.Collections
             int x = _StartIndex / _BufferSize;
             int y = _StartIndex - (x * _BufferSize);
             var tmp = _Buffer[x][y];
-            if (x == _Buffer.Length / ExpandFactor)
+            if (x == _Buffer.Length - _BufferSize)
             {
                 _StartIndex = 1;
                 var arr = new T[_Buffer.Length - x][];
@@ -138,18 +136,15 @@ namespace Eve.Collections
             return tmp;
         }
 
-        private void Expand()
-        {
-            var tmp = new T[_Buffer.Length * ExpandFactor][];
-            Array.Copy(_Buffer, 0, tmp, 0, _Buffer.Length);
-            _Buffer = tmp;
-        }
         private void Expand(int min)
         {
-            int ex = _Buffer.Length * ExpandFactor;
-            var tmp = new T[ex < min ? min + 1 : ex][];
-            Array.Copy(_Buffer, 0, tmp, 0, _Buffer.Length);
-            _Buffer = tmp;
+            lock (ExpandLock)
+            {
+                int ex = _Buffer.Length + _BufferSize;
+                var tmp = new T[ex < min ? min + 1 : ex][];
+                Array.Copy(_Buffer, 0, tmp, 0, _Buffer.Length);
+                _Buffer = tmp;
+            }
         }
 
         public void Clear()

@@ -31,11 +31,10 @@ namespace Eve.Collections.Graph
             {
                 lock (GLock)
                 {
-                    Neigbors[id] = new DynamicArray<int>(_AverageEdges);
                     _Nodes[id] = value;
-                    Count++;
+                    Neigbors[id] = new DynamicArray<int>(_AverageEdges);
                 }
-                _AverageEdges = (int)Math.Max(Math.Sqrt(Count + Growth), _AverageEdges);
+                _AverageEdges = (int)Math.Max(Math.Sqrt(++Count + Growth), _AverageEdges);
             }
         }
 

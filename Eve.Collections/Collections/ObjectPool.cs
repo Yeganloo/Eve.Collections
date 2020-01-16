@@ -56,7 +56,7 @@ namespace Eve.Collections
             if (_Pool.Length > 0)
                 lock (GLock)
                 {
-                    return _Pool.Pop();
+                    return _Pool.Dequeue();
                 }
             return _Constructor();
             
