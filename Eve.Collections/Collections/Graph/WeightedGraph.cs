@@ -96,5 +96,30 @@ namespace Eve.Collections.Graph
                     return true;
             return false;
         }
+
+        public override void RemoveNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RemoveEdge()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override TEdge[,] Adjacency()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override T Clone<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override T SubGraph<T>(IEnumerable<int> nodes)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

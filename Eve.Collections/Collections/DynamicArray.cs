@@ -34,7 +34,7 @@ namespace Eve.Collections
 
     public class DynamicArray<T> : IList<T>
     {
-        private object ExpandLock = new object();
+        private object BuferLock = new object();
         #region Initialize
 
         public DynamicArray() : this(1024) { }
@@ -138,7 +138,7 @@ namespace Eve.Collections
 
         private void Expand(int min)
         {
-            lock (ExpandLock)
+            lock (BuferLock)
             {
                 int ex = _Buffer.Length + _BufferSize;
                 var tmp = new T[ex < min ? min + 1 : ex][];
@@ -262,6 +262,24 @@ namespace Eve.Collections
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        public DynamicArray<T> Clone()
+        {
+            var tmp = new DynamicArray<T>(_BufferSize);
+            lock (BuferLock)
+            {
+                Array.Copy(_Buffer[0], 0, tmp._Buffer[0], 0, _BufferSize);
+                for (int i = 1; i < _BufferSize; i++)
+                {
+                    if (_Buffer[i] != null)
+                    {
+                        tmp._Buffer[i] = new T[_BufferSize];
+                        Array.Copy(_Buffer[i], 0, tmp._Buffer[i], 0, _BufferSize);
+                    }
+                }
+            }
+            return tmp;
         }
 
         public class DynamicArrayEnumerator<TT> : IEnumerator<TT>

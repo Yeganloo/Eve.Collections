@@ -39,9 +39,19 @@ namespace Eve.Collections.Graph
 
         public abstract void AddEdge(int source, int destination);
 
+        public abstract void RemoveNode();
+
+        public abstract void RemoveEdge();
+
         public abstract IEnumerable<Node<TNode>> GetNeigbors(int nodeId);
 
         public abstract bool AreNeigbor(int node1, int node2);
+
+        public abstract TEdge[,] Adjacency();
+
+        public abstract T Clone<T>() where T : GraphBase<TNode, TEdge>;
+
+        public abstract T SubGraph<T>(IEnumerable<int> nodes) where T : GraphBase<TNode, TEdge>;
 
         public abstract void Clear();
 

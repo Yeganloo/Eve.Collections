@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Eve.Collections.Graph
 {
-    public class Graph<TNode> : GraphBase<TNode, int>
+    public class Graph<TNode> : GraphBase<TNode, bool>
     {
         protected object GLock = new object();
         protected readonly DynamicArray<DynamicArray<int>> Neigbors;
@@ -86,6 +86,31 @@ namespace Eve.Collections.Graph
         public override bool AreNeigbor(int node1, int node2)
         {
             return Neigbors[node1].Contains(node2);
+        }
+
+        public override void RemoveNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RemoveEdge()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool[,] Adjacency()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override T Clone<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override T SubGraph<T>(IEnumerable<int> nodes)
+        {
+            throw new NotImplementedException();
         }
     }
 }
