@@ -97,12 +97,12 @@ namespace Eve.Collections.Graph
             return false;
         }
 
-        public override void RemoveNode()
+        public override void RemoveNode(int id)
         {
             throw new NotImplementedException();
         }
 
-        public override void RemoveEdge()
+        public override void RemoveEdge(int src, int dst)
         {
             throw new NotImplementedException();
         }

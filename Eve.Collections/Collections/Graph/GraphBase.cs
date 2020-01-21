@@ -39,9 +39,9 @@ namespace Eve.Collections.Graph
 
         public abstract void AddEdge(int source, int destination);
 
-        public abstract void RemoveNode();
+        public abstract void RemoveNode(int id);
 
-        public abstract void RemoveEdge();
+        public abstract void RemoveEdge(int source, int destination);
 
         public abstract IEnumerable<Node<TNode>> GetNeigbors(int nodeId);
 

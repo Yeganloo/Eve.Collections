@@ -17,7 +17,7 @@ namespace Eve.Collections.Graph
 
         public override void AddEdge(int source, int destination)
         {
-            var src = Neigbors[source];
+            var src = _Neigbors[source];
             lock (src)
             {
                 src.Add(destination);

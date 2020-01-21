@@ -6,17 +6,17 @@ namespace Eve.Collections.Graph
     public class Graph<TNode> : GraphBase<TNode, bool>
     {
         protected object GLock = new object();
-        protected readonly DynamicArray<DynamicArray<int>> Neigbors;
+        protected readonly DynamicArray<DynamicArray<int>> _Neigbors;
 
         #region Init
 
         public Graph(bool directed) : base(directed)
         {
-            Neigbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
+            _Neigbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
         }
         public Graph(bool directed, int count) : base(directed, count)
         {
-            Neigbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
+            _Neigbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
         }
 
         #endregion
@@ -32,7 +32,7 @@ namespace Eve.Collections.Graph
                 lock (GLock)
                 {
                     _Nodes[id] = value;
-                    Neigbors[id] = new DynamicArray<int>(_AverageEdges);
+                    _Neigbors[id] = new DynamicArray<int>(_AverageEdges);
                 }
                 _AverageEdges = (int)Math.Max(Math.Sqrt(++Count + Growth), _AverageEdges);
             }
@@ -49,7 +49,7 @@ namespace Eve.Collections.Graph
         {
             if (Directed)
             {
-                var src = Neigbors[source];
+                var src = _Neigbors[source];
                 lock (src)
                 {
                     src.Add(destination);
@@ -57,8 +57,8 @@ namespace Eve.Collections.Graph
             }
             else
             {
-                var src = Neigbors[source];
-                var dst = Neigbors[destination];
+                var src = _Neigbors[source];
+                var dst = _Neigbors[destination];
                 lock (GLock)
                 {
                     src.Add(destination);
@@ -72,28 +72,36 @@ namespace Eve.Collections.Graph
             lock (GLock)
             {
                 _Nodes.Clear();
-                Neigbors.Clear();
+                _Neigbors.Clear();
                 Count = 0;
             }
         }
 
         public override IEnumerable<Node<TNode>> GetNeigbors(int nodeId)
         {
-            foreach (var n in Neigbors[nodeId])
+            foreach (var n in _Neigbors[nodeId])
                 yield return _Nodes[n];
         }
 
         public override bool AreNeigbor(int node1, int node2)
         {
-            return Neigbors[node1].Contains(node2);
+            return _Neigbors[node1].Contains(node2);
         }
 
-        public override void RemoveNode()
+        public override void RemoveNode(int id)
         {
-            throw new NotImplementedException();
+            lock (GLock)
+            {
+                _Nodes.RemoveAt(id);
+                foreach (var i in _Neigbors[id])
+                {
+                    _Neigbors[i].Remove(id);
+                }
+                _Neigbors.RemoveAt(id);
+            }
         }
 
-        public override void RemoveEdge()
+        public override void RemoveEdge(int src, int dst)
         {
             throw new NotImplementedException();
         }
