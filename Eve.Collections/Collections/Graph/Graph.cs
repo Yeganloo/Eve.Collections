@@ -6,7 +6,7 @@ namespace Eve.Collections.Graph
     public class Graph<TNode> : GraphBase<TNode, bool>
     {
         protected object GLock = new object();
-        protected readonly DynamicArray<DynamicArray<int>> _Neigbors;
+        protected DynamicArray<DynamicArray<int>> _Neigbors;
 
         #region Init
 
@@ -33,8 +33,9 @@ namespace Eve.Collections.Graph
                 {
                     _Nodes[id] = value;
                     _Neigbors[id] = new DynamicArray<int>(_AverageEdges);
+                    Count = id > Count ? id : Count;
                 }
-                _AverageEdges = (int)Math.Max(Math.Sqrt(++Count + Growth), _AverageEdges);
+                _AverageEdges = (int)Math.Max(Math.Sqrt(Count + Growth), _AverageEdges);
             }
         }
 
@@ -93,17 +94,30 @@ namespace Eve.Collections.Graph
             lock (GLock)
             {
                 _Nodes.RemoveAt(id);
-                foreach (var i in _Neigbors[id])
+                if (Directed)
                 {
-                    _Neigbors[i].Remove(id);
+                    foreach (var i in _Neigbors)
+                    {
+                        while (i.Remove(id)) ;
+                    }
                 }
+                else
+                    foreach (var i in _Neigbors[id])
+                    {
+                        _Neigbors[i].Remove(id);
+                    }
                 _Neigbors.RemoveAt(id);
             }
         }
 
         public override void RemoveEdge(int src, int dst)
         {
-            throw new NotImplementedException();
+            lock (GLock)
+            {
+                _Neigbors[src].Remove(dst);
+                if (!Directed)
+                    _Neigbors[dst].Remove(src);
+            }
         }
 
         public override bool[,] Adjacency()
@@ -111,9 +125,14 @@ namespace Eve.Collections.Graph
             throw new NotImplementedException();
         }
 
-        public override T Clone<T>()
+        public override object Clone()
         {
-            throw new NotImplementedException();
+            var res = new Graph<TNode>(Directed, 1);
+            res._Nodes = _Nodes.Clone();
+            res._Neigbors = new DynamicArray<DynamicArray<int>>(Count);
+            for (int i = 0; i < Count; i++)
+                res._Neigbors[i] = _Neigbors[i]?.Clone();
+            return res;
         }
 
         public override T SubGraph<T>(IEnumerable<int> nodes)

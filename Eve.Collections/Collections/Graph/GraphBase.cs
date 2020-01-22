@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace Eve.Collections.Graph
 {
-    public abstract class GraphBase<TNode, TEdge> : IEnumerable<Node<TNode>>
+    public abstract class GraphBase<TNode, TEdge> : IEnumerable<Node<TNode>>, ICloneable
     {
         protected const int Growth = 1024;
-        protected readonly DynamicArray<Node<TNode>> _Nodes;
+        protected DynamicArray<Node<TNode>> _Nodes;
         protected int _AverageEdges = Growth;
         public bool Directed { get; }
 
@@ -49,8 +49,6 @@ namespace Eve.Collections.Graph
 
         public abstract TEdge[,] Adjacency();
 
-        public abstract T Clone<T>() where T : GraphBase<TNode, TEdge>;
-
         public abstract T SubGraph<T>(IEnumerable<int> nodes) where T : GraphBase<TNode, TEdge>;
 
         public abstract void Clear();
@@ -66,6 +64,8 @@ namespace Eve.Collections.Graph
         {
             return _Nodes.GetEnumerator();
         }
+
+        public abstract object Clone();
 
         #endregion
     }

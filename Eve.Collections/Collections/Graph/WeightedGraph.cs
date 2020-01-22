@@ -112,7 +112,7 @@ namespace Eve.Collections.Graph
             throw new NotImplementedException();
         }
 
-        public override T Clone<T>()
+        public override object Clone()
         {
             throw new NotImplementedException();
         }
