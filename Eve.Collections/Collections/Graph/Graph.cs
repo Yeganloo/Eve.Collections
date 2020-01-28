@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Eve.Collections.Graph
 {
     public class Graph<TNode> : GraphBase<TNode, bool>
     {
-        protected object GLock = new object();
+        protected readonly object GLock = new object();
         protected DynamicArray<DynamicArray<int>> _Neigbors;
 
         #region Init
@@ -122,7 +123,16 @@ namespace Eve.Collections.Graph
 
         public override bool[,] Adjacency()
         {
-            throw new NotImplementedException();
+            var ad = new bool[Count, Count];
+            lock (GLock)
+            {
+                Parallel.For(0, Count, (i) =>
+                {
+                    foreach (var id in _Neigbors[i])
+                        ad[i, id] = true;
+                });
+            }
+            return ad;
         }
 
         public override object Clone()
@@ -132,9 +142,11 @@ namespace Eve.Collections.Graph
             res._Neigbors = new DynamicArray<DynamicArray<int>>(Count);
             for (int i = 0; i < Count; i++)
                 res._Neigbors[i] = _Neigbors[i]?.Clone();
+            res.Count = Count;
             return res;
         }
 
+        //TODO Impliment
         public override T SubGraph<T>(IEnumerable<int> nodes)
         {
             throw new NotImplementedException();

@@ -25,6 +25,7 @@ namespace Eve.Collections.Graph
         {
             _Nodes = new DynamicArray<Node<TNode>>(_AverageEdges = (int)Math.Ceiling(Math.Sqrt(count + Growth)));
             Directed = directed;
+            Count = count;
         }
 
         #endregion
