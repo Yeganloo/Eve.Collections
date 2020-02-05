@@ -5,21 +5,21 @@ using Eve.Collections;
 namespace Eve.CollectionsTest
 {
     [Collection("Non-Parallel")]
-    public class ObjectPoolTest
+    public class NamedListTest
     {
-        private const int Round = 9000000;
+        private const int Round = 90000;
 
         [Fact]
         public void _Sequenc_ReadWrite()
         {
-            var pool = new ObjectPool<object>();
+            var pool = new NamedList<object>();
             for (int i = 0; i < Round; i++)
             {
-                pool.Catch(i);
+                pool.Add(i.ToString(), i);
             }
             for (int i = 0; i < Round; i++)
             {
-                Assert.True(i == (int)pool.Get());
+                Assert.True(i == (int)pool[i.ToString()]);
             }
         }
 

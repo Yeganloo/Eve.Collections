@@ -7,7 +7,7 @@ namespace Eve.CollectionsTest
     [Collection("Non-Parallel")]
     public class DynamicArrayTest
     {
-        private const int Round = 90000000;
+        private const int Round = 9000000;
 
         [Fact]
         public void _ReversSequenc_ReadWrite()

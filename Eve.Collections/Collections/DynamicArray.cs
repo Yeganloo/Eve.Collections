@@ -170,6 +170,7 @@ namespace Eve.Collections
             return -1;
         }
 
+        //BUG Dose not work correctly!
         public void Insert(int index, T item)
         {
             index += _StartIndex;

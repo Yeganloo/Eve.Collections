@@ -7,7 +7,7 @@ namespace Eve.CollectionsTest.Graph
     [Collection("Non-Parallel")]
     public class DirectedGraphTest
     {
-        private const int Round = 500000;
+        private const int Round = 50000;
 
         [Fact]
         public void _Sequenc_ReadWrite()

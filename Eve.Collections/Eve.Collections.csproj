@@ -14,7 +14,11 @@
     <PackageTags>Object pool,Queue,Stack,List,Graph</PackageTags>
     <RepositoryURL>https://github.com/Yeganloo/Eve.Collections</RepositoryURL>
   </PropertyGroup>
+
   <ItemGroup>
-    <None Include="../LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+    <Compile Remove="Collections\Graph\WeightedGraph.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
   </ItemGroup>
 </Project>
