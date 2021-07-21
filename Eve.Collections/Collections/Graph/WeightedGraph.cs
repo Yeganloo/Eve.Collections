@@ -143,7 +143,7 @@ namespace Eve.Collections.Graph
             return ad;
         }
 
-        //TODO Check
+        //TODO Write Test
         public override object Clone()
         {
             var res = new WeightedGraph<TNode, TEdge>(Directed, 1);
