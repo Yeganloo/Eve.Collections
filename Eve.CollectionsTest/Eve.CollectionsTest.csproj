@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>dotnet5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Collections\Graph\WeightedGraph.cs" />
