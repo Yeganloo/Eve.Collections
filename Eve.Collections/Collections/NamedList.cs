@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System;
 
 
 namespace Eve.Collections
 {
+  /// <description> Unstable </description>
   public class NamedList<T> : IEnumerable<KeyValuePair<string, T>>
   {
     public NamedList()

@@ -13,14 +13,14 @@ namespace Eve.CollectionsTest
     [Fact]
     public void _Sequence_ReadWrite()
     {
-      var pool = new NamedList<object>();
+      var list = new NamedList<object>();
       for (int i = 0; i < Round; i++)
       {
-        pool.Add(i.ToString(), i);
+        list.Add(i.ToString(), i);
       }
       for (int i = 0; i < Round; i++)
       {
-        Assert.True(i == (int)pool[i.ToString()]);
+        Assert.True(i == (int)list[i.ToString()]);
       }
     }
   }
