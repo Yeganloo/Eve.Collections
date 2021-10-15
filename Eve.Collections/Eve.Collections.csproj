@@ -5,7 +5,7 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
     <PackageId>Eve.Collections</PackageId>
-    <Version>0.1.1-alpha</Version>
+    <Version>0.1.1-beta1</Version>
     <Authors>hoseinyeganloo@gmail.com</Authors>
     <Company>Eve</Company>
     <PackageDescription>Useful collection structures. Balanced for both performance and memory usage!</PackageDescription>
