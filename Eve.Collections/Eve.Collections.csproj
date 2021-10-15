@@ -10,6 +10,7 @@
     <Company>Eve</Company>
     <PackageDescription>Useful collection structures. Balanced for both performance and memory usage!</PackageDescription>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Copyright>Hosein Yeganloo - 2017</Copyright>
     <PackageTags>Object pool,Queue,Stack,List,Graph</PackageTags>
     <RepositoryURL>https://github.com/Yeganloo/Eve.Collections</RepositoryURL>
@@ -20,5 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="../LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="../README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
