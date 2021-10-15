@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Compile Remove="Collections\Graph\WeightedGraph.cs" />
+    <Compile Remove="Collections\NamedList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="../LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
