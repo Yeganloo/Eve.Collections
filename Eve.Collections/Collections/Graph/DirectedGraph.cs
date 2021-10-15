@@ -23,6 +23,7 @@ namespace Eve.Collections.Graph
       }
     }
 
+    // BUG This is wrong!
     public override void RemoveNode(int id)
     {
       lock (GLock)
@@ -35,7 +36,7 @@ namespace Eve.Collections.Graph
         _Neighbors.RemoveAt(id);
       }
     }
-
+    
     public override void RemoveEdge(int src, int dst)
     {
       lock (GLock)
