@@ -44,9 +44,9 @@ namespace Eve.Collections.Graph
 
         public abstract void RemoveEdge(int source, int destination);
 
-        public abstract IEnumerable<Node<TNode>> GetNeigbors(int nodeId);
+        public abstract IEnumerable<Node<TNode>> GetNeighbors(int nodeId);
 
-        public abstract bool AreNeigbor(int node1, int node2);
+        public abstract bool AreNeighbor(int node1, int node2);
 
         public abstract TEdge[,] Adjacency();
 
@@ -54,7 +54,7 @@ namespace Eve.Collections.Graph
 
         public abstract void Clear();
 
-        #region Intefaces
+        #region Interfaces
 
         public IEnumerator<Node<TNode>> GetEnumerator()
         {

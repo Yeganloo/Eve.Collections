@@ -7,17 +7,17 @@ namespace Eve.Collections.Graph
     public class Graph<TNode> : GraphBase<TNode, bool>
     {
         protected readonly object GLock = new object();
-        protected DynamicArray<DynamicArray<int>> _Neigbors;
+        protected DynamicArray<DynamicArray<int>> _Neighbors;
 
         #region Init
 
         public Graph(bool directed) : base(directed)
         {
-            _Neigbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
+            _Neighbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
         }
         public Graph(bool directed, int count) : base(directed, count)
         {
-            _Neigbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
+            _Neighbors = new DynamicArray<DynamicArray<int>>(_AverageEdges);
         }
 
         #endregion
@@ -33,7 +33,7 @@ namespace Eve.Collections.Graph
                 lock (GLock)
                 {
                     _Nodes[id] = value;
-                    _Neigbors[id] = new DynamicArray<int>(_AverageEdges);
+                    _Neighbors[id] = new DynamicArray<int>(_AverageEdges);
                     Count = id > Count ? id : Count;
                 }
                 _AverageEdges = (int)Math.Max(Math.Sqrt(Count + Growth), _AverageEdges);
@@ -51,7 +51,7 @@ namespace Eve.Collections.Graph
         {
             if (Directed)
             {
-                var src = _Neigbors[source];
+                var src = _Neighbors[source];
                 lock (src)
                 {
                     src.Add(destination);
@@ -59,8 +59,8 @@ namespace Eve.Collections.Graph
             }
             else
             {
-                var src = _Neigbors[source];
-                var dst = _Neigbors[destination];
+                var src = _Neighbors[source];
+                var dst = _Neighbors[destination];
                 lock (GLock)
                 {
                     src.Add(destination);
@@ -74,20 +74,20 @@ namespace Eve.Collections.Graph
             lock (GLock)
             {
                 _Nodes.Clear();
-                _Neigbors.Clear();
+                _Neighbors.Clear();
                 Count = 0;
             }
         }
 
-        public override IEnumerable<Node<TNode>> GetNeigbors(int nodeId)
+        public override IEnumerable<Node<TNode>> GetNeighbors(int nodeId)
         {
-            foreach (var n in _Neigbors[nodeId])
+            foreach (var n in _Neighbors[nodeId])
                 yield return _Nodes[n];
         }
 
-        public override bool AreNeigbor(int node1, int node2)
+        public override bool AreNeighbor(int node1, int node2)
         {
-            return _Neigbors[node1].Contains(node2);
+            return _Neighbors[node1].Contains(node2);
         }
 
         public override void RemoveNode(int id)
@@ -97,17 +97,17 @@ namespace Eve.Collections.Graph
                 _Nodes.RemoveAt(id);
                 if (Directed)
                 {
-                    foreach (var i in _Neigbors)
+                    foreach (var i in _Neighbors)
                     {
                         while (i.Remove(id)) ;
                     }
                 }
                 else
-                    foreach (var i in _Neigbors[id])
+                    foreach (var i in _Neighbors[id])
                     {
-                        _Neigbors[i].Remove(id);
+                        _Neighbors[i].Remove(id);
                     }
-                _Neigbors.RemoveAt(id);
+                _Neighbors.RemoveAt(id);
             }
         }
 
@@ -115,9 +115,9 @@ namespace Eve.Collections.Graph
         {
             lock (GLock)
             {
-                _Neigbors[src].Remove(dst);
+                _Neighbors[src].Remove(dst);
                 if (!Directed)
-                    _Neigbors[dst].Remove(src);
+                    _Neighbors[dst].Remove(src);
             }
         }
 
@@ -128,7 +128,7 @@ namespace Eve.Collections.Graph
             {
                 Parallel.For(0, Count, (i) =>
                 {
-                    foreach (var id in _Neigbors[i])
+                    foreach (var id in _Neighbors[i])
                         ad[i, id] = true;
                 });
             }
@@ -139,14 +139,14 @@ namespace Eve.Collections.Graph
         {
             var res = new Graph<TNode>(Directed, 1);
             res._Nodes = _Nodes.Clone();
-            res._Neigbors = new DynamicArray<DynamicArray<int>>(Count);
+            res._Neighbors = new DynamicArray<DynamicArray<int>>(Count);
             for (int i = 0; i < Count; i++)
-                res._Neigbors[i] = _Neigbors[i]?.Clone();
+                res._Neighbors[i] = _Neighbors[i]?.Clone();
             res.Count = Count;
             return res;
         }
 
-        //TODO Impliment
+        //TODO Implement
         public override T SubGraph<T>(IEnumerable<int> nodes)
         {
             throw new NotImplementedException();

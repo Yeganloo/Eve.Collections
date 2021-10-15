@@ -10,7 +10,7 @@ namespace Eve.CollectionsTest.Graph
         private const int Round = 500000;
 
         [Fact]
-        public void _Sequenc_ReadWrite()
+        public void _Sequence_ReadWrite()
         {
             var graph = new WeightedGraph<object,int>(false, Round);
             var random = new Random(DateTime.Now.Millisecond);

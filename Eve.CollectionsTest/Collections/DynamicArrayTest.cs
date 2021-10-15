@@ -10,7 +10,7 @@ namespace Eve.CollectionsTest
         private const int Round = 9000000;
 
         [Fact]
-        public void _ReversSequenc_ReadWrite()
+        public void _ReversSequence_ReadWrite()
         {
 
             var array = new DynamicArray<object>();
@@ -25,7 +25,7 @@ namespace Eve.CollectionsTest
         }
 
         [Fact]
-        public void _Sequenc_ReadWrite()
+        public void _Sequence_ReadWrite()
         {
             var array = new DynamicArray<object>();
             for (int i = 0; i < Round; i++)
@@ -39,7 +39,7 @@ namespace Eve.CollectionsTest
         }
 
         [Fact]
-        public void _SequencAdd_ReadWrite()
+        public void _SequenceAdd_ReadWrite()
         {
             var array = new DynamicArray<object>();
             for (int i = 0; i < Round; i++)
@@ -97,7 +97,7 @@ namespace Eve.CollectionsTest
         }
 
         [Fact]
-        public void RmoveAt()
+        public void RemoveAt()
         {
             int rem = 73;
             DynamicArray<int> array = new DynamicArray<int>(10);

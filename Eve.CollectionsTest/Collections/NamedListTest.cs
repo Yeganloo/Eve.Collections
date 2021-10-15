@@ -8,10 +8,10 @@ namespace Eve.CollectionsTest
   [Collection("Non-Parallel")]
   public class NamedListTest
   {
-    private const int Round = 20;
+    private const int Round = 90000;
 
     [Fact]
-    public void _Sequenc_ReadWrite()
+    public void _Sequence_ReadWrite()
     {
       var pool = new NamedList<object>();
       for (int i = 0; i < Round; i++)

@@ -7,17 +7,17 @@ namespace Eve.Collections.Graph
     public class WeightedGraph<TNode, TEdge> : GraphBase<TNode, TEdge>
     {
         private object GLock = new object();
-        protected DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>> _Neigbors;
+        protected DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>> _Neighbors;
 
         #region Init
 
         public WeightedGraph(bool directed) : base(directed)
         {
-            _Neigbors = new DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>>(_AverageEdges);
+            h = new DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>>(_AverageEdges);
         }
         public WeightedGraph(bool directed, int count) : base(directed, count)
         {
-            _Neigbors = new DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>>(_AverageEdges);
+            h = new DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>>(_AverageEdges);
         }
 
         #endregion
@@ -32,7 +32,7 @@ namespace Eve.Collections.Graph
             {
                 lock (GLock)
                 {
-                    _Neigbors[id] = new DynamicArray<KeyValuePair<int, TEdge>>(_AverageEdges);
+                    h[id] = new DynamicArray<KeyValuePair<int, TEdge>>(_AverageEdges);
                     _Nodes[id] = value;
                     Count++;
                 }
@@ -56,7 +56,7 @@ namespace Eve.Collections.Graph
         {
             if (Directed)
             {
-                var src = _Neigbors[source];
+                var src = h[source];
                 lock (src)
                 {
                     src.Add(new KeyValuePair<int, TEdge>(destination, value));
@@ -64,8 +64,8 @@ namespace Eve.Collections.Graph
             }
             else
             {
-                var src = _Neigbors[source];
-                var dst = _Neigbors[destination];
+                var src = h[source];
+                var dst = h[destination];
                 lock (GLock)
                 {
                     src.Add(new KeyValuePair<int, TEdge>(destination, value));
@@ -79,20 +79,20 @@ namespace Eve.Collections.Graph
             lock (GLock)
             {
                 _Nodes.Clear();
-                _Neigbors.Clear();
+                h.Clear();
                 Count = 0;
             }
         }
 
-        public override IEnumerable<Node<TNode>> GetNeigbors(int nodeId)
+        public override IEnumerable<Node<TNode>> GetNeighbors(int nodeId)
         {
-            foreach (var n in _Neigbors[nodeId])
+            foreach (var n in h[nodeId])
                 yield return _Nodes[n.Key];
         }
 
-        public override bool AreNeigbor(int node1, int node2)
+        public override bool AreNeighbor(int node1, int node2)
         {
-            foreach (var n in _Neigbors[node1])
+            foreach (var n in h[node1])
                 if (n.Key == node2)
                     return true;
             return false;
@@ -105,17 +105,17 @@ namespace Eve.Collections.Graph
                 _Nodes.RemoveAt(id);
                 if (Directed)
                 {
-                    foreach (var i in _Neigbors)
+                    foreach (var i in h)
                     {
                         while (i.Remove(id)) ;
                     }
                 }
                 else
-                    foreach (var i in _Neigbors[id])
+                    foreach (var i in h[id])
                     {
-                        _Neigbors[i].Remove(id);
+                        h[i].Remove(id);
                     }
-                _Neigbors.RemoveAt(id);
+                h.RemoveAt(id);
             }
         }
 
@@ -123,9 +123,9 @@ namespace Eve.Collections.Graph
         {
             lock (GLock)
             {
-                _Neigbors[src].Remove(dst);
+                h[src].Remove(dst);
                 if (!Directed)
-                    _Neigbors[dst].Remove(src);
+                    h[dst].Remove(src);
             }
         }
 
@@ -136,7 +136,7 @@ namespace Eve.Collections.Graph
             {
                 Parallel.For(0, Count, (i) =>
                 {
-                    foreach (var item in _Neigbors[i])
+                    foreach (var item in h[i])
                         ad[i, item.Key] = item.Value;
                 });
             }
@@ -148,16 +148,16 @@ namespace Eve.Collections.Graph
         {
             var res = new WeightedGraph<TNode, TEdge>(Directed, 1);
             res._Nodes = _Nodes.Clone();
-            res._Neigbors = new DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>>(Count);
+            res.h = new DynamicArray<DynamicArray<KeyValuePair<int, TEdge>>>(Count);
             Parallel.For(0, Count, (i) =>
             {
-                res._Neigbors[i] = _Neigbors[i]?.Clone();
+                res.h[i] = h[i]?.Clone();
             });
             res.Count = Count;
             return res;
         }
 
-        //TODO Impliment
+        //TODO Implement
         public override T SubGraph<T>(IEnumerable<int> nodes)
         {
             throw new NotImplementedException();
