@@ -34,7 +34,7 @@ namespace Eve.Collections
 
   public class DynamicArray<T> : IList<T>
   {
-    private object BuferLock = new object();
+    private object BufferLock = new object();
     #region Initialize
 
     public DynamicArray() : this(1024) { }
@@ -138,7 +138,7 @@ namespace Eve.Collections
 
     private void Expand(int min)
     {
-      lock (BuferLock)
+      lock (BufferLock)
       {
         int ex = _Buffer.Length + _BufferSize;
         var tmp = new T[ex < min ? min + 1 : ex][];
@@ -267,7 +267,7 @@ namespace Eve.Collections
     public DynamicArray<T> Clone()
     {
       var tmp = new DynamicArray<T>(_BufferSize);
-      lock (BuferLock)
+      lock (BufferLock)
       {
         Array.Copy(_Buffer[0], 0, tmp._Buffer[0], 0, _BufferSize);
         for (int i = 1; i < _BufferSize; i++)
