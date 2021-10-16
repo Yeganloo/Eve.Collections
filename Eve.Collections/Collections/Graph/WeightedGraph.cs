@@ -92,26 +92,28 @@ namespace Eve.Collections.Graph
       return _Neighbors[node1].Any(q => q.Key == node2);
     }
 
-    // TODO
     public override void RemoveNode(int id)
     {
       lock (GLock)
       {
         _Nodes.RemoveAt(id);
-        // BUG This is wrong!
         if (Directed)
         {
+          _Neighbors.RemoveAt(id);
           foreach (var i in _Neighbors)
           {
-            while (i.Remove(id)) ;
+            while (i.Remove(item => item.Key == id)) ;
           }
         }
         else
+        {
           foreach (var i in _Neighbors[id])
           {
-            _Neighbors[i].Remove(id);
+            _Neighbors[i.Key].Remove(item => item.Key == id);
           }
-        _Neighbors.RemoveAt(id);
+          _Neighbors.RemoveAt(id);
+        }
+
       }
     }
 
@@ -119,21 +121,21 @@ namespace Eve.Collections.Graph
     {
       lock (GLock)
       {
-        _Neighbors[src].Remove(dst);
+        _Neighbors[src].Remove(item => item.Key == dst);
         if (!Directed)
-          _Neighbors[dst].Remove(src);
+          _Neighbors[dst].Remove(item => item.Key == src);
       }
     }
 
-    public override bool[,] Adjacency()
+    public override TEdge[,] Adjacency()
     {
-      var ad = new bool[Count, Count];
+      var ad = new TEdge[Count, Count];
       lock (GLock)
       {
         Parallel.For(0, Count, (i) =>
         {
           foreach (var id in _Neighbors[i])
-            ad[i, id] = true;
+            ad[i, id.Key] = _Edges[id.Value];
         });
       }
       return ad;
@@ -141,9 +143,8 @@ namespace Eve.Collections.Graph
 
     public override object Clone()
     {
-      var res = new Graph<TNode>(Directed, 1);
+      var res = new WeightedGraph<TNode, TEdge>(Directed, Count);
       res._Nodes = _Nodes.Clone();
-      res._Neighbors = new DynamicArray<DynamicArray<int>>(Count);
       for (int i = 0; i < Count; i++)
         res._Neighbors[i] = _Neighbors[i]?.Clone();
       res.Count = Count;

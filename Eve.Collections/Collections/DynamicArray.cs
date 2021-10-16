@@ -44,6 +44,30 @@ namespace Eve.Collections
       Clear();
     }
 
+    // BUG
+    public DynamicArray(DynamicArray<T> src) : this(src.Length)
+    {
+      lock (BufferLock)
+      {
+        Array.Copy(src._Buffer[0], src._StartIndex, this._Buffer[0], 0, src._BufferSize - src._StartIndex);
+        this.Length = src._BufferSize - src._StartIndex;
+        for (int i = 1; i < src._BufferSize - 1; i++)
+        {
+          if (src._Buffer[i] != null)
+          {
+            Array.Copy(src._Buffer[i], 0, this._Buffer[0], (i * src._BufferSize) - src._StartIndex, src._BufferSize);
+            this.Length = ((i + 1) * src._BufferSize) - src._StartIndex;
+          }
+        }
+        var ind = src._BufferSize - 1;
+        if (src._Buffer[ind] != null)
+        {
+          Array.Copy(src._Buffer[ind], 0, this._Buffer[0], (ind * src._BufferSize) - src._StartIndex, src.Count - this.Count);
+          this.Length = src.Length;
+        }
+      }
+    }
+
     public int Length
     {
       get
@@ -242,10 +266,15 @@ namespace Eve.Collections
 
     public bool Remove(T item)
     {
+      return Remove(i => item.Equals(i));
+    }
+
+    public bool Remove(Func<T, bool> comparer)
+    {
       for (int i = _StartIndex; i < Length + _StartIndex; i++)
       {
         T k = this[i];
-        if (k != null && k.Equals(item))
+        if (k != null && comparer(k))
         {
           RemoveAt(i - _StartIndex);
           return true;

@@ -95,20 +95,22 @@ namespace Eve.Collections.Graph
       lock (GLock)
       {
         _Nodes.RemoveAt(id);
-        // BUG This is wrong!
         if (Directed)
         {
+          _Neighbors.RemoveAt(id);
           foreach (var i in _Neighbors)
           {
             while (i.Remove(id)) ;
           }
         }
         else
+        {
           foreach (var i in _Neighbors[id])
           {
             _Neighbors[i].Remove(id);
           }
-        _Neighbors.RemoveAt(id);
+          _Neighbors.RemoveAt(id);
+        }
       }
     }
 

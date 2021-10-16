@@ -39,6 +39,21 @@ namespace Eve.CollectionsTest
         }
 
         [Fact]
+        public void _CopyConstructor()
+        {
+            var array = new DynamicArray<object>();
+            for (int i = 0; i < Round; i++)
+            {
+                array[i] = i;
+            }
+            array = new DynamicArray<object>(array);
+            for (int i = 0; i < Round; i++)
+            {
+                Assert.True(i == (int)array[i]);
+            }
+        }
+
+        [Fact]
         public void _SequenceAdd_ReadWrite()
         {
             var array = new DynamicArray<object>();

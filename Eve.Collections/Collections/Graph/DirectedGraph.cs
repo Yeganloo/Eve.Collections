@@ -22,18 +22,17 @@ namespace Eve.Collections.Graph
         src.Add(destination);
       }
     }
-
-    // BUG This is wrong!
+    
     public override void RemoveNode(int id)
     {
       lock (GLock)
       {
         _Nodes.RemoveAt(id);
+        _Neighbors.RemoveAt(id);
         foreach (var i in _Neighbors)
         {
           while (i.Remove(id)) ;
         }
-        _Neighbors.RemoveAt(id);
       }
     }
     
