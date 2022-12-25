@@ -14,6 +14,7 @@
     <Copyright>Hosein Yeganloo - 2017</Copyright>
     <PackageTags>Object pool,Queue,Stack,List,Graph</PackageTags>
     <RepositoryURL>https://github.com/Yeganloo/Eve.Collections</RepositoryURL>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
