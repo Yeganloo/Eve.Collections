@@ -46,10 +46,10 @@ namespace Eve.CollectionsTest
             {
                 array[i] = i;
             }
-            array = new DynamicArray<object>(array);
+            var array2 = new DynamicArray<object>(array);
             for (int i = 0; i < Round; i++)
             {
-                Assert.True(i == (int)array[i]);
+                Assert.Equal(array[i], array2[i]);
             }
         }
 
