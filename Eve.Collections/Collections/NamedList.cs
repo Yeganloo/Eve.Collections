@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace Eve.Collections
 {
   /// <description> Unstable </description>
-  public class NamedList<T> : IEnumerable<KeyValuePair<string, T>>
+  internal class NamedList<T> : IEnumerable<KeyValuePair<string, T>>
   {
     public NamedList()
     {

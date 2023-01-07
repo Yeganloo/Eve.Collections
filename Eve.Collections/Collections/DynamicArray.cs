@@ -34,7 +34,6 @@ namespace Eve.Collections
 
     public class DynamicArray<T> : IList<T>
     {
-        private object BufferLock = new object();
         #region Initialize
 
         public DynamicArray() : this(1024) { }
@@ -46,24 +45,21 @@ namespace Eve.Collections
 
         public DynamicArray(DynamicArray<T> src) : this(src.Length)
         {
-            lock (BufferLock)
+            Array.Copy(src._Buffer[0], src._StartIndex, this._Buffer[0], 0, src._BufferSize - src._StartIndex);
+            for (int i = 1; i < src._LastX; i++)
             {
-                Array.Copy(src._Buffer[0], src._StartIndex, this._Buffer[0], 0, src._BufferSize - src._StartIndex);
-                for (int i = 1; i < src._LastX; i++)
+                if (src._Buffer[i] != null)
                 {
-                    if (src._Buffer[i] != null)
-                    {
-                        Array.Copy(src._Buffer[i], 0, this._Buffer[0], (i * src._BufferSize) - src._StartIndex, src._BufferSize);
-                    }
+                    Array.Copy(src._Buffer[i], 0, this._Buffer[0], (i * src._BufferSize) - src._StartIndex, src._BufferSize);
                 }
-                if (src._Buffer[src._LastX] != null)
-                {
-                    Array.Copy(src._Buffer[src._LastX], 0, this._Buffer[0], (src._LastX * src._BufferSize) - src._StartIndex, src._LastY + 1);
-                }
-                this._LastX = 0;
-                this._LastY = src.Length - 1;
-                this._Length = src.Length;
             }
+            if (src._Buffer[src._LastX] != null)
+            {
+                Array.Copy(src._Buffer[src._LastX], 0, this._Buffer[0], (src._LastX * src._BufferSize) - src._StartIndex, src._LastY + 1);
+            }
+            this._LastX = 0;
+            this._LastY = src.Length - 1;
+            this._Length = src.Length;
         }
 
         public int Length
@@ -160,13 +156,10 @@ namespace Eve.Collections
 
         private void Expand(int min)
         {
-            lock (BufferLock)
-            {
-                int ex = _Buffer.Length + _BufferSize;
-                var tmp = new T[ex < min ? min + 1 : ex][];
-                Array.Copy(_Buffer, 0, tmp, 0, _Buffer.Length);
-                _Buffer = tmp;
-            }
+            int ex = _Buffer.Length + _BufferSize;
+            var tmp = new T[ex < min ? min + 1 : ex][];
+            Array.Copy(_Buffer, 0, tmp, 0, _Buffer.Length);
+            _Buffer = tmp;
         }
 
         public void Clear()
@@ -197,7 +190,6 @@ namespace Eve.Collections
             index += _StartIndex;
             int x = index / _BufferSize;
             int y = index - (x * _BufferSize);
-
             if (index < Length)
             {
                 int i = _LastX;
@@ -214,7 +206,6 @@ namespace Eve.Collections
             {
                 this[index] = item;
             }
-
         }
 
         public void RemoveAt(int index)
@@ -294,16 +285,13 @@ namespace Eve.Collections
         public DynamicArray<T> Clone()
         {
             var tmp = new DynamicArray<T>(_BufferSize);
-            lock (BufferLock)
+            Array.Copy(_Buffer[0], 0, tmp._Buffer[0], 0, _BufferSize);
+            for (int i = 1; i < _BufferSize; i++)
             {
-                Array.Copy(_Buffer[0], 0, tmp._Buffer[0], 0, _BufferSize);
-                for (int i = 1; i < _BufferSize; i++)
+                if (_Buffer[i] != null)
                 {
-                    if (_Buffer[i] != null)
-                    {
-                        tmp._Buffer[i] = new T[_BufferSize];
-                        Array.Copy(_Buffer[i], 0, tmp._Buffer[i], 0, _BufferSize);
-                    }
+                    tmp._Buffer[i] = new T[_BufferSize];
+                    Array.Copy(_Buffer[i], 0, tmp._Buffer[i], 0, _BufferSize);
                 }
             }
             return tmp;

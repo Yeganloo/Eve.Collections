@@ -34,20 +34,18 @@ namespace Eve.Collections
     {
         private object GLock = new object();
         public ObjectPool() : this(() => { return Activator.CreateInstance<T>(); }) { }
-        public ObjectPool(Func<T> constructor) { _Constructor = constructor; }
+        public ObjectPool(Func<T> constructor) : this(constructor, (obj) => obj) { }
+        public ObjectPool(Func<T> constructor, Func<T, T> destructor) { _Constructor = constructor; _Destructor = destructor; }
 
         private Func<T> _Constructor = null;
-        private Func<T, T> _Destructor = null;
+        private Func<T, T> _Destructor;
         private DynamicArray<T> _Pool = new DynamicArray<T>();
 
         public void Catch(T Object)
         {
             lock (GLock)
             {
-                if (_Destructor != null)
-                    _Pool.Add(_Destructor(Object));
-                else
-                    _Pool.Add(Object);
+                _Pool.Add(_Destructor(Object));
             }
         }
 
@@ -59,16 +57,9 @@ namespace Eve.Collections
                     return _Pool.Dequeue();
                 }
             return _Constructor();
-            
+
         }
 
-        public int Count
-        {
-            get
-            {
-                return _Pool.Length;
-            }
-        }
-
+        public int Count => _Pool.Length;
     }
 }
