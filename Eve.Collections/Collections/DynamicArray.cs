@@ -36,8 +36,7 @@ namespace Eve.Collections
     {
         #region Initialize
 
-        public DynamicArray() : this(1024) { }
-        public DynamicArray(int bufferSize)
+        public DynamicArray(int bufferSize = 1024)
         {
             _BufferSize = bufferSize;
             Clear();
