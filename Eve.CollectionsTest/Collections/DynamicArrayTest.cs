@@ -8,6 +8,7 @@ namespace Eve.CollectionsTest
     public class DynamicArrayTest
     {
         private const int Round = 9000000;
+        private int rem = 73;
 
         [Fact]
         public void _ReversSequence_ReadWrite()
@@ -114,19 +115,20 @@ namespace Eve.CollectionsTest
         [Fact]
         public void RemoveAt()
         {
-            int rem = 73;
             DynamicArray<int> array = new DynamicArray<int>(10);
             for (int i = 0; i < 90; i++)
             {
                 array.Add(i);
             }
+            array.Dequeue();
             array.RemoveAt(rem);
-            for (int i = 0; i < 89; i++)
+            array.RemoveAt(rem);
+            for (int i = 0; i < 87; i++)
             {
                 if (i < rem)
-                    Assert.True(i == array[i]);
-                else
                     Assert.True(i + 1 == array[i]);
+                else
+                    Assert.True(i + 3 == array[i]);
             }
         }
 
@@ -134,7 +136,6 @@ namespace Eve.CollectionsTest
         //TODO Better test
         public void Insert()
         {
-            int rem = 73;
             DynamicArray<int> array = new DynamicArray<int>(10);
             for (int i = 0; i < 90; i++)
             {
@@ -150,6 +151,37 @@ namespace Eve.CollectionsTest
                 else
                     Assert.Equal(i - 1, array[i]);
             }
+        }
+
+        [Fact]
+        public void Contains()
+        {
+            DynamicArray<int> array = new DynamicArray<int>(10);
+            for (int i = 0; i < rem; i++)
+            {
+                array.Add(i);
+            }
+            array.Dequeue();
+            array.Add(rem);
+            Assert.True(array.Contains(rem));
+            Assert.Contains(rem, array);
+            Assert.DoesNotContain(rem + 1, array);
+        }
+
+        [Fact]
+        public void RemoveDequeuePop()
+        {
+            DynamicArray<int> array = new DynamicArray<int>(10);
+            for (int i = 0; i < rem; i++)
+            {
+                array.Add(i);
+            }
+            array.Dequeue();
+            array.Remove(rem - 5);
+            array.Pop();
+            Assert.DoesNotContain(0, array);
+            Assert.DoesNotContain(rem - 5, array);
+            Assert.DoesNotContain(rem - 1, array);
         }
 
         [Fact]

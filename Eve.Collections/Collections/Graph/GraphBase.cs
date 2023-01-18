@@ -7,7 +7,7 @@ namespace Eve.Collections.Graph
   public abstract class GraphBase<TNode, TEdge> : IEnumerable<Node<TNode>>, ICloneable
   {
     protected const int Growth = 1024;
-    protected DynamicArray<Node<TNode>> _Nodes;
+    protected IDynamicArray<Node<TNode>> _Nodes;
     protected int _AverageEdges = Growth;
     public bool Directed { get; }
 

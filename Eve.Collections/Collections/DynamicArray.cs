@@ -32,7 +32,7 @@ namespace Eve.Collections
     using System.Collections;
     using System.Collections.Generic;
 
-    public class DynamicArray<T> : IList<T>
+    public class DynamicArray<T> : IDynamicArray<T>
     {
         #region Initialize
 
@@ -70,26 +70,15 @@ namespace Eve.Collections
             private set
             {
                 _LastX = (_StartIndex + value) / _BufferSize;
-                _LastY = value - _StartIndex - (_LastX * _BufferSize);
+                _LastY = (_StartIndex + value) % _BufferSize;
                 _Length = value;
             }
         }
 
-        public int Count
-        {
-            get
-            {
-                return _Length;
-            }
-        }
+        public int Count => _Length;
+        public bool IsReadOnly => false;
+        public int BufferSize => _BufferSize;
 
-        public bool IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
 
         private int _StartIndex;
         private int _Length;
@@ -211,7 +200,7 @@ namespace Eve.Collections
         {
             index = index + _StartIndex;
             int x = index / _BufferSize;
-            int y = index - (x * _BufferSize);
+            int y = index % _BufferSize;
             Array.Copy(_Buffer[x], y + 1, _Buffer[x], y, _BufferSize - y - 1);
 
             for (int i = x + 1; i <= _LastX; i++)
@@ -230,7 +219,7 @@ namespace Eve.Collections
 
         public bool Contains(T item)
         {
-            for (int i = _StartIndex; i < Length + _StartIndex; i++)
+            for (int i = 0; i < Length; i++)
             {
                 T k = this[i];
                 if (k != null && k.Equals(item))
@@ -259,12 +248,12 @@ namespace Eve.Collections
 
         public bool Remove(Func<T, bool> comparer)
         {
-            for (int i = _StartIndex; i < Length + _StartIndex; i++)
+            for (int i = 0; i < Length; i++)
             {
                 T k = this[i];
                 if (k != null && comparer(k))
                 {
-                    RemoveAt(i - _StartIndex);
+                    RemoveAt(i);
                     return true;
                 }
             }
@@ -281,7 +270,7 @@ namespace Eve.Collections
             return this.GetEnumerator();
         }
 
-        public DynamicArray<T> Clone()
+        public IDynamicArray<T> Clone()
         {
             var tmp = new DynamicArray<T>(_BufferSize);
             Array.Copy(_Buffer[0], 0, tmp._Buffer[0], 0, _BufferSize);

@@ -4,7 +4,7 @@
     <OutputType>Library</OutputType>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <PackageId>Eve.Collections</PackageId>
-    <Version>0.1.2</Version>
+    <Version>0.1.3</Version>
     <Authors>hoseinyeganloo@gmail.com</Authors>
     <Company>Eve</Company>
     <PackageDescription>Useful collection structures. Balanced for both performance and memory usage!</PackageDescription>
@@ -14,6 +14,7 @@
     <PackageTags>Object pool,Queue,Stack,List,Graph</PackageTags>
     <RepositoryURL>https://github.com/Yeganloo/Eve.Collections</RepositoryURL>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
